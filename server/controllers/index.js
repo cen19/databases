@@ -23,7 +23,9 @@ module.exports = {
   messages: {
     get: function (req, res) {
       console.log('testing get..........');
+      // console.log('REQ :', req);
       models.messages.get();  
+
       // fetch all msg
     // a function which handles a get request for all messages
     // var endpoint = req.uri.pathname;
@@ -33,6 +35,9 @@ module.exports = {
     },
 
     post: function (req, res) { 
+      console.log('testing post..........');
+      console.log('REQ :', req);
+      // models.messages.post();  
     // create msg
     // a function which handles posting a message to the database
     // var endpoint = req.uri.pathname;

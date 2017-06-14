@@ -5,7 +5,7 @@ var url = require('url');
 module.exports = {
   messages: {
     get: function (callback) { // a function which 
-      console.log("get from model");
+      // console.log("get from model");
       //produces all the messages
       // fetch all msgs
       // looks at our db
@@ -14,10 +14,15 @@ module.exports = {
       // we want to get from msg: id, text, roomname, username
       // get username with join
         // join with loose selection criteria bc implementing db intn from scratch, no code enforcing selection criteria
-      // var queryStr = 'select messages.id, messasges.text, messages.roomname from messages LEFT OUTER JOIN users (messages.userid = users.id) ORDER BY messages.id desc'; 
-      // db.query(queryStr, function(err, results) {
-      //   callback(results);
-      // });
+      var queryStr = 'select messages.id, messasges.text, messages.roomname from messages LEFT OUTER JOIN users (messages.userid = users.id) ORDER BY messages.id desc'; 
+      db.query(queryStr, function(err, results) {
+        if (err) {
+          console.log('Failed to get all messages');
+        } else {
+          console.log('Successfully fetched messages');
+          callback(results);
+        }
+      });
     },
 
     post: function (params, callback) {
@@ -26,7 +31,12 @@ module.exports = {
       // createsubquery to get userid where username = thing we provide input for
       var queryStr = 'insert into messages(text, userid, roomname) \ values (?, (select id from users where username = ? limit 1), ?)';
       db.query(queryStr, params, function(err, results) {
-        callback(results);
+        if (err) {
+          console.log('Failed to insert message into db');
+        } else {
+          console.log('Successfully inserted message into db');
+          callback(results);
+        }
       }); 
     } 
   },
